@@ -8,3 +8,6 @@ steps:
         terraform init
         terraform workspace select ${_WORKSPACE} || terraform workspace new ${_WORKSPACE}
         terraform apply -auto-approve
+
+options:
+  logging: CLOUD_LOGGING_ONLY

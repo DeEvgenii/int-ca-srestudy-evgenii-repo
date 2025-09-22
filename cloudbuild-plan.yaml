@@ -10,3 +10,6 @@ steps:
     terraform validate
     terraform workspace select dev || terraform workspace new dev
     terraform plan
+
+options:
+  logging: CLOUD_LOGGING_ONLY
