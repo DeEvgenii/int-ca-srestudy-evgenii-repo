@@ -1,18 +1,12 @@
 steps:
-  - name: 'hashicorp/terraform:latest'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        terraform init
-        terraform validate
-
-  - name: 'hashicorp/terraform:latest'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        terraform workspace select dev || terraform workspace new dev
-        terraform plan
-
-workingDir: 'environments/dev'
+- name: 'hashicorp/terraform:latest'
+  entrypoint: 'sh'
+  dir: 'environments/dev'
+  args:
+  - '-c'
+  - |
+    set -e  # Прервать выполнение при любой ошибке
+    terraform init
+    terraform validate
+    terraform workspace select dev || terraform workspace new dev
+    terraform plan
