@@ -1,6 +1,6 @@
 resource "google_compute_network" "vpc_network" {
     name = var.network_name
-    description = "SRE課題サービス用VPC"
+    description = "SRE課題サービス用VPC-dev"
     auto_create_subnetworks = false
     routing_mode = "REGIONAL"
     mtu = 1460
