@@ -1,11 +1,10 @@
 steps:
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'sh'
+    dir: 'environments/dev'
     args:
       - '-c'
       - |
         terraform init
         terraform workspace select ${_WORKSPACE} || terraform workspace new ${_WORKSPACE}
         terraform apply -auto-approve
-
-workingDir: 'environments/${_WORKSPACE}'
