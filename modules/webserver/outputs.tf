@@ -4,6 +4,6 @@ output "mig_id" {
 }
 
 output "health_check_id" {
-    description = "ヘルスチェックのID"
+    description = "devヘルスチェックのID"
     value = google_compute_health_check.nginx_http_health_check.id
 }
