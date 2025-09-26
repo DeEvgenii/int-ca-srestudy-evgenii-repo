@@ -59,6 +59,11 @@ resource "google_compute_firewall" "allow_ssh_via_iap" {
     source_ranges = ["35.235.240.0/20"]
 }
 
+resource "google_compute_address" "nat_ip" {
+    name = "nat-static-ip-address"
+    region = var.region
+}
+
 resource "google_compute_router" "router" {
     name = "nat-router-dev"
     network = google_compute_network.vpc_network.id
@@ -68,7 +73,9 @@ resource "google_compute_router" "router" {
 resource "google_compute_router_nat" "nat_gateway" {
     name = "nat-gateway-dev"
     router = google_compute_router.router.name
-    region = var.region
+    region = google_compute_router.router.region
     source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
-    nat_ip_allocate_option = "AUTO_ONLY"
+    nat_ip_allocate_option = "MANUAL_ONLY"
+
+    nat_ips = [google_compute_address.nat_ip.self_link]
 }
