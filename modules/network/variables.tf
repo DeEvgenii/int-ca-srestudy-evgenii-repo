@@ -15,3 +15,8 @@ variable "region" {
     description = "GCPリージョン"
     type        = string 
 }
+
+variable "project_id" {
+  description = "devプロジェクトのID"
+  type        = string
+}
