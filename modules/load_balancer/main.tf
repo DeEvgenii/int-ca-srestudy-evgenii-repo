@@ -2,9 +2,21 @@ resource "google_compute_security_policy" "waf_policy" {
     project = var.project_id
     name = "default-security-policy-for-backend-service-nginx-back-dev"
     description = "WAFポリシー"
+
+    rule {
+        action = "allow"
+        priority = 1000
+        match {
+            expr {
+                expression = "inIpRange(origin.ip, '35.194.105.118/32')"
+            }
+        }
+        description = "クラウドエースのプロキシのIPアドレス経由のアクセスのみを許可"
+    }
+
     rule {
         action = "deny(403)"
-        priority = 1000
+        priority = 1100
         match {
             expr {
                 expression = "evaluatePreconfiguredExpr('sqli-stable')"
@@ -15,7 +27,7 @@ resource "google_compute_security_policy" "waf_policy" {
 
     rule {
         action = "deny(403)"
-        priority = 1100
+        priority = 1200
         match {
             expr {
                 expression = "evaluatePreconfiguredExpr('xss-stable')"
@@ -25,7 +37,7 @@ resource "google_compute_security_policy" "waf_policy" {
     }
 
     rule {
-        action = "allow"
+        action = "deny(403)"
         priority = 2147483647
         match {
             versioned_expr = "SRC_IPS_V1"
@@ -33,6 +45,7 @@ resource "google_compute_security_policy" "waf_policy" {
                 src_ip_ranges = ["*"]
             }
         }
+        description = "デフォルトですべてのアクセスを拒否"
     }
 }
 
